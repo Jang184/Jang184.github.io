@@ -1,7 +1,7 @@
 # Site settings
 title: 뚜벅뚜벅 개발일기
 SEOTitle: 뚜벅뚜벅 개발일기
-header-img: img/about-bg-walle.jpg
+header-img: img/about-bg.jpg
 email: e2joo418@gmail.com
 description: "description"
 keyword: "Web, JavaScript"
@@ -14,7 +14,7 @@ future: true
 # SNS settings
 RSS: false
 #weibo_username:     huxpro
-#zhihu_username:     huxpro
+rocketpunch_username:  e2joo418
 github_username:    jang184
 #twitter_username:   huxpro
 #facebook_username:  huxpro
@@ -78,7 +78,7 @@ netease_comment: false
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "Backend developer <br> 뚜벅뚜벅초."
+sidebar-about-description: "Juri 주리 | Backend developer  <br> 하루는 성실하게, 인생 전체는 되는대로 살고 싶습니다. <br> Javascript, NodeJS "
 sidebar-avatar: https://github.com/jang184.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
