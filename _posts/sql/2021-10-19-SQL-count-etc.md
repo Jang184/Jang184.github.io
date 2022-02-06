@@ -1,7 +1,12 @@
 ---
-title: SQL 집계함수 (COUNT 이외)
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - 집계함수 (COUNT 이외)"
+date: 2021-10-19
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## 📌SUM으로 합계 구하기

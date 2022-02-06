@@ -1,7 +1,12 @@
 ---
-title: SQL 상관 서브쿼리
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - 상관 서브쿼리"
+date: 2021-11-02
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## EXISTS

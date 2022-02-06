@@ -1,7 +1,12 @@
 ---
-title: SQL CASE를 활용한 테이블 피봇
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - CASE를 활용한 테이블 피봇"
+date: 2022-01-10
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 > 피봇 테이블 : 데이터 처리의 한 기법으로 유용한 정보에 집중할 수 있도록 통계를 재정렬하는 것을 말한다.

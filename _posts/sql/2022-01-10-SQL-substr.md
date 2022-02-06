@@ -1,7 +1,12 @@
 ---
-title: SQL 문자열 자르기
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - 문자열 자르기"
+date: 2022-01-10
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## 문자열을 자르는 내장함수

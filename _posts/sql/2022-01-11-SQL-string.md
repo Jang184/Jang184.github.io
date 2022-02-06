@@ -1,7 +1,12 @@
 ---
-title: SQL 문자열을 다루는 함수
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - 문자열을 다루는 함수"
+date: 2022-01-11
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## 1. LOWER

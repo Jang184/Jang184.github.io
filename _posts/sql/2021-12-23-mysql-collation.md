@@ -1,9 +1,12 @@
 ---
-title: MySQL Character Set과 Collation
-category: SQL
-tag:
-    - TIL
-    - database
+layout: post
+title: "MySQL - Character Set과 Collation"
+date: 2021-12-23
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 [참고](https://mysqldba.tistory.com/154)
 

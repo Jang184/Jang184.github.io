@@ -1,7 +1,12 @@
 ---
-title: SQL GROUP BY로 그룹화하기
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - GROUP BY로 그룹화하기"
+date: 2021-10-21
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## GROUP BY로 그룹화하기

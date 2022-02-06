@@ -1,7 +1,12 @@
 ---
-title: SQL DELETE로 데이터 삭제/UPDATE로 데이터 갱신
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - DELETE로 데이터 삭제/UPDATE로 데이터 갱신"
+date: 2021-10-16
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## DELETE로 데이터 삭제하기

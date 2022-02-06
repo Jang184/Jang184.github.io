@@ -1,7 +1,12 @@
 ---
-title: SQL 서브쿼리
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - 서브쿼리"
+date: 2021-11-01
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## 서브쿼리

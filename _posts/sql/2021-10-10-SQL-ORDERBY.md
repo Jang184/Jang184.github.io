@@ -1,7 +1,12 @@
 ---
-title: SQL ORDER BY로 정렬하기
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - ORDER BY로 정렬하기"
+date: 2021-10-10
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 `ORDER BY`를 이용해 컬럼을 지정하고 정렬할 수 있다.
 

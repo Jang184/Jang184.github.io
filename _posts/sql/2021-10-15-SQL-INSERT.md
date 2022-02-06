@@ -1,7 +1,12 @@
 ---
-title: SQL INSERT로 데이터 추가하기
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - INSERT로 데이터 추가하기"
+date: 2021-10-15
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## INSERT로 테이블에 행 추가하기

@@ -1,7 +1,12 @@
 ---
-title: SQL 데이터베이스 객체
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - 데이터베이스 객체"
+date: 2021-11-03
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## 데이터베이스 객체

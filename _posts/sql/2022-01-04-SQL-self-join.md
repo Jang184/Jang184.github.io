@@ -1,7 +1,12 @@
 ---
-title: SQL SELF JOIN 
-category: SQL
-tag: TIL
+layout: post
+title: "MySQL - SELF JOIN "
+date: 2022-01-04
+author: "Juri"
+header-style: text
+catalog: true
+tags:
+    - MySQL
 ---
 
 ## Self JOIN
