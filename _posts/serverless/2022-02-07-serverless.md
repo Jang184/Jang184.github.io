@@ -2,7 +2,7 @@
 layout: post
 header-style: text
 title: serverless framework - 환경 셋팅과 배포
-subtitle: 서버리스 왕초보 탈출기 (1) 
+subtitle: 서버리스 왕초보 탈출기 (1) 서버유지보수로부터 자유로워지자! 
 author: Juri
 tags:
     - serverless
