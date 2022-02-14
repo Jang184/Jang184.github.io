@@ -1,11 +1,12 @@
 ---
 layout: post
 header-style: text
-title: javascript - Promise.all()을 사용한 비동기 처리
+title: Promise.all()을 사용한 비동기 처리
 subtitle: 여러 개의 promise를 병렬 실행해서 람다 Timeout 피하기
 author: Juri
 tags:
     - javascript
+    - Dynamodb
 ---
 
 통계 자료를 만들기 위해서 MySQL에 있는 비디오의 조회수를 일 단위로 Dynamodb에 기록하려고 한다. 매일 자정에 모든 비디오의 조회수를 캡쳐해서 저장하는 것과 비슷하다.
@@ -95,5 +96,11 @@ Promise.all(updates)
 ```
 promise들을 하나의 배열에 담는다. 그리고 그 배열을 `Promise.all()`안에 담아주면 끝! 
 
+**Promise 적용 전 : 약 9분**
 ![](/img/in-post/promise-2.png)
+
+**Promise 적용 후 : 약 1초**
+![](/img/in-post/promise-3.png)
+
+드라마틱하게 줄어든 `Duration`을 확인할 수 있다.
 
