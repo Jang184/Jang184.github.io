@@ -150,25 +150,103 @@ $ sls hello
 ```
 CLI에 미리 지정해 둔 명령어를 입력해서 빠르게 스크립트를 실행할 수 있다. 혹은 배포할 때 스크립트가 자동으로 실행되게 할 수 있다.
 
+**● Serverless Plugin typescripts**
+>Serverless plugin for zero-config Typescript support
+
+자동으로 `tsconfig.json`을 읽어서 typescript를 javascript로 컴파일해주는 플러그인이다.
+
 로컬 테스트
 ---
 
 `Serverless Offline` 플러그인을 사용해서 쉽게 로컬테스트를 할 수 있다.
 
-1. PostMan과 같은 툴
-2. CLI 명령어
+```ts
+// handler.ts
+
+export const hello = async () => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "juri, you are the best!"
+    })
+  }
+}
+```
+
+```yml
+# serverless.yml
+
+service: server
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-northeast-2
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+```
+
+### 1. PostMan과 같은  API툴
+```bash
+$ serverless offline
+```
+![](/img/in-post/serverless-offline.png)
+
+서버를 켜고 람다 함수에 지정한 HTTP 엔드포인트로 request 메세지를 보낸다.
+
+![](/img/in-post/serverless-offline2.png)
+
+response를 확인할 수 있다.
+
+### 2. CLI 명령어
+
+실행하고자 하는 함수를 지정해서 실행시킬 수 있다.
 
 ```bash
 $ serverless invoke local --function myFunction
+```
 
+람다함수의 `event`를 임의로 생성해서 테스트해볼 수 있다.
+
+```bash
 $ serverless invoke local --function myFunction --path ./lib/data.json
 
 $ serverless invoke local --function myFunction --data '{"a":"bar"}'
 ```
-함수를 지정하는 것뿐만 아니라 함수의 경로를 지정하거나 데이터를 전달할 수도 있다. context도 환경변수도
 
+이외에도 `stage`나 `env`도 지정해서 함수를 실행시켜볼 수 있다.
+
+배포
+----
+```bash
+$ sls deploy
+```
+![](/img/in-post/serverless-deploy.png)
+
+입력한 AWS 계정으로 배포가 진행된다. 
+
+**cloudformation**
+![](/img/in-post/serverless-deploy2.png)
+**lambda**
+![](/img/in-post/serverless-deploy3.png)
+
+배포가 끝나고난 뒤 AWS console에서 `cloudformation`과 `lambda`가 잘 생성된 것을 확인할 수 있다.
+
+![](/img/in-post/serverless-deploy4.png)
+
+API Gateway 엔드포인트로 request를 보내 배포가 잘 됐음을 확인할 수 있다.
 
 마치며
 ----
 
-다음 포스팅에서는 
+typescript로 간단한 람다함수를 만들고 API Gateway를 트리거로 배포해보았다. 갈 길이 구만리지만 앞으로 서버리스 왕초보 탈출기를 포스팅하면서 서버리스의 중수 정도는 되고 싶다.
