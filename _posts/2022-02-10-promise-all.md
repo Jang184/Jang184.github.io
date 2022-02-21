@@ -92,7 +92,7 @@ for(const data of videoQuery[0]){
     updates.push(documentClient.update(params).promise)
 }
 
-Promise.all(updates)
+await Promise.all(updates)
 ```
 promise들을 하나의 배열에 담는다. 그리고 그 배열을 `Promise.all()`안에 담아주면 끝! 
 
