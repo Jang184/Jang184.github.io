@@ -8,6 +8,7 @@ catalog: true
 tags:
     - Cloud
     - aws
+    - kocw
 ---
 
 <i>이 포스팅은 부산디지털대학교의 [클라우드 인프라 구축 및 활용](www.kocw.net) 강의를 보고 작성했습니다.</i>
