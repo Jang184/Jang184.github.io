@@ -86,7 +86,7 @@ LOCAL_DATABASE = myservice
 
 ## 다양한 Connection APIs
 
--   getConnection()
+**getConnection()**
 
 `creatConnection`으로 만든 커넥션 풀에서 커넥션 객체를 가져온다.
 
@@ -94,7 +94,7 @@ LOCAL_DATABASE = myservice
 const connection = getConnection();
 ```
 
--   getRepository
+**getRepository**
 
 커넥션에 있는 Entity의 `Repository`를 가져온다.
 
@@ -102,15 +102,15 @@ const connection = getConnection();
 const userRepository: Repository<User> = getRepository(User);
 ```
 
--   transaction
+**transaction**
 
 여러 개의 데이터베이스 요청에 대해 하나의 트랜잭션을 제공한다. `QueryRunner`라고 하는 독립된 데이터베이스 커넥션을 사용한다. 이 query runner는 getConnection으로 가져온 커넥션 객체로부터 만든다.
 
 트랜잭션은 아래와 같은 순서로 이루어진다. `try-catch`안에서 에러가 발생하면 롤백이 되면서 모든 데이터베이스 요청이 무효화된다.
 
 1. startTransaction 트랜잭션 시작 <br>
-   2-1. commitTransaction 트랜잭션 커밋<br>
-   2-2. rollbackTransaction 트랜잭션 롤백<br>
+   1-1. commitTransaction 트랜잭션 커밋<br>
+   1-2. rollbackTransaction 트랜잭션 롤백<br>
 2. release 트랜잭션 종료
 
 ```ts
@@ -152,3 +152,14 @@ lambda 는 다른 lambda 와 독립된 컨테이너로 각각의 lambda가 같�
 
 위의 간단한 흐름으로 진행될 것이라고 예상된다. lambda의 cold start를 방지하기 위한 warm-up 방법은 여러가지가 있으니 warm state만 유지된다면 무리없이 커넥션 풀을 사용할 수 있지 않을까?
 대신 RESTapi를 사용하면 각 엔드포인트마다 함수가 존재할텐데 그 많은 함수가 전부 connection 관련된 코드를 포함해야하니 모듈화가 관건일 것 같다. 혹은 미들웨어를 사용해 함수가 실행되기 전, 실행된 후에 connection 로직이 실행되도록 코드를 포함해도 좋을 것 같다.
+
+### 확인
+
+실험 과정
+
+`create user`, `get user` 두 개의 lambda 함수를 만들었습니다. 아래의 순서대로 lambda 함수를 실행시켜 connection이 어떻게 유지되는지 확인해보았습니다.
+![](/img/in-post/connection-lambda.jpg)
+
+먼저, create user는 get user의 connection pool에 영향을 주지 않았습니다. 반면에 get user는 최초로 실행된 이후 다시 실행했을 때 connection pool이 있음을 확인할 수 있습니다.
+![](/img/in-post/connection-cloudwatch.png)
+즉, 같은 lambda 함수간에 warm state를 유지하는 동안 connection pool을 공유할 수 있습니다.
