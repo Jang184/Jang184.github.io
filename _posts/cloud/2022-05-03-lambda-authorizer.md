@@ -13,7 +13,7 @@ tags:
 
 API Gateway 의 Lambda authorizer는 Lambda 함수를 사용하여 API 메서드에 대한 액세스를 제어하는 API Gateway 기능이다. 클라이언트가 API를 호출하면 API Gateway는 이 API와 연결된 Lambda authorizer를 호출한다. 이것은 호출자의 자격 증명을 입력으로 받아 IAM 정책을 출력으로 반환한다.
 
-**token authorizer**와 **request authorizer**가 있다. token authorizer는 JWT 또는 OAuth 토큰에 있는 호출자의 자격 증명을 받고, request authorizer는 헤더, 쿼리 스트링, stageVariables 및 $context 변수의 조합으로 호출자의 자격 증명을 수신한다. API Gateway가 지원하는 `WebSocket`의 경우 request authorizer만 사용가능하다.
+authorizer의 종류는 **token authorizer**와 **request authorizer**가 있다. token authorizer는 JWT 또는 OAuth 토큰에 있는 호출자의 자격 증명을 받고, request authorizer는 헤더, 쿼리 스트링, stageVariables 및 $context 변수의 조합으로 호출자의 자격 증명을 수신한다. API Gateway가 지원하는 `WebSocket`의 경우 request authorizer만 사용가능하다.
 
 ### Lambda authorizer workflow
 
@@ -30,11 +30,12 @@ API Gateway 의 Lambda authorizer는 Lambda 함수를 사용하여 API 메서드
 ![](/img/in-post/lambda-authorizer.jpg)
 
 (엄밀히 말하면 위의 사진은 틀렸다. 정확한 워크플로우는 더 위의 공식 홈페이지에서 가져온 사진을 보면 된다.)
+
 클라이언트가 보낸 JWT를 확인한 후 backend API를 호출한다.
 
 ## 실습
 
-도식화한대로 실습을 해보겠다. 내 정보를 가져오기 위해서 API를 호출하고자 한다. 내 개인정보는 소중하기 때문에 나만 접근할 수 있어야한다. Lambda authorizer는 내가 보낸 JWT를 받아 확인한 후 claim에 있는 나의 user 정보를 API로 전달할 것이다. 그러면 API에서는 그 user 정보를 이용해 내 정보를 가져올 것이다.
+도식화한대로 실습을 해보겠다. 내 정보를 가져오기 위해서 API를 호출하고자 한다. 소중한 내 개인정보는 나만 접근할 수 있어야한다. Lambda authorizer는 내가 보낸 JWT를 받아 확인한 후 claim에 있는 나의 user 정보를 API로 전달할 것이다. 그러면 API에서는 그 user 정보를 이용해 내 정보를 가져올 것이다.
 
 Lambda authorizer가 반환하는 response에는 `policyDocument`가 포함되어야 한다.
 
@@ -79,3 +80,16 @@ export const handler = async (event, context) => {
 
 const validateToken = (token) => jwt.verify(token, process.env.AUTH_TOKEN_SALT);
 ```
+
+-   Api Gateway가 authorizer로 보내는 event의 `authorizationToken`에 token이 전달된다.
+-   backend API로 보내고자 하는 jwt의 claim에 있는 user 정보는 `context`에 담아 전달한다.
+-   token이 없거나 verifying에 실패하면 **Unauthorized** 에러를 반환한다.
+
+## 테스트
+
+1. Success response
+   ![](/img/in-post/authorizer-response1.png)
+2. Failed response - no token
+   ![](/img/in-post/authorizer-response2.png)
+3. Failed response - invalid token
+   ![](/img/in-post/authorizer-response3.png)

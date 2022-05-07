@@ -78,7 +78,8 @@ netease_comment: false
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "Juri 주리 | Backend developer  <br> 하루는 성실하게, 인생 전체는 되는대로 살고 싶습니다. <br> Javascript, NodeJS "
+sidebar-about-description: "Juri 주리 | Backend developer  <br> 하루는 성실하게, 인생 전체는 되는대로 살고 싶습니다. <br> Javascript, NodeJS 
+<br><br> 이 블로그는 개인적인 학습을 위한 기술블로그로 상업적 목적으로 사용하지 않습니다."
 sidebar-avatar: https://github.com/jang184.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
