@@ -192,3 +192,131 @@ type Proxify<T> = {
 ```
 
 위의 코드는 typescript 공식 홈페이지에 있는 예제 코드로 key값의 타입을 한번더 다른 타입으로 감싸고 있다.
+
+### conditional type
+
+```ts
+type Check<T> = T extends string ? boolean : number;
+type Type = Check<string>; //'boolean'
+```
+
+타입 Check는 T가 `string`을 상속하면 boolean 타입을, 그렇지않으면 number 타입을 갖는다. 따라서 T가 string인 타입 Type은 boolean 타입을 갖는 것을 확인할 수 있다.
+
+```ts
+type TypeName<T> = T extends string
+    ? "string"
+    : T extends number
+    ? "number"
+    : T extends boolean
+    ? "boolean"
+    : T extends undefined
+    ? "undefined"
+    : T extends Function
+    ? "function"
+    : "object";
+```
+
+자바스크립트의 삼항 조건 연산자를 중첩해서 사용한 type 선언이다. T가 어떤 것을 상속하느냐에 따라 타입을 결정한다. `string`을 상속하면 'string'타입을, `number`을 상속하면 'number'타입을 갖는다.
+
+```ts
+type T0 = TypeName<string>; //'string'
+type T1 = TypeName<"abc">; //'string'
+type T2 = TypeName<() => void>; //'function'
+```
+
+T에 `string`이 아닌 진짜 문자열이 들어와도 이 문자열은 string 을 상속하므로 'string' 타입을 갖는다. 함수가 들어오면 'function' 타입을 갖는다.
+
+### Readonly type
+
+위의 map type에서 살펴본 응용 타입들은 직접 구현할 필요없이 타입스크립트 개발자들이 미리 만들어놓았기 때문에 잘 가져다가 쓰기만 하면 된다.
+
+```ts
+type ToDo = {
+    title: string;
+    description: string;
+};
+
+const display = (todo: Readonly<ToDo>) => {
+    todo.title = "something"; //error
+};
+```
+
+함수 display의 parameter로 들어오는 todo는 읽기 전용 속성이기 때문에 수정할 수 없다.
+
+### partial type
+
+`Partial<T>` 를 사용해 optional한 타입을 만들 수 있다.
+
+```ts
+type ToDo = {
+    title: string;
+    description: string;
+    label: string;
+    priority: "high" | "low";
+};
+
+const updateTodo(todo: Todo, fieldsToUpdate: Partial<ToDo>) : ToDo => {
+    return {
+        ...todo,
+        ...fieldsToUpdate
+    }
+}
+```
+
+함수 updateTodo의 매개변수 fieldsToUpdate는 ToDo의 Partial type으로 타입 ToDo의 프로퍼티를 optional하게 갖는다.
+
+```ts
+const todo: ToDo = {
+    title: "let's study",
+    description: "typescript",
+    label: "study",
+    priority: "high"
+};
+
+const updated = updateTodo(todo, { priority: "low" });
+```
+
+updated를 확인하면 priority가 low로 바뀌는 것을 확인할 수 있다.
+
+### Pick, Omit type
+
+video 타입에서 특정 프로퍼티만 취급하고 싶을 때 pick과 omit을 사용할 수 있다. video 타입에서 'id'와 'title' 프로퍼티만 갖는 타입을 선언하고 싶다고 하자.
+
+```ts
+type Video = {
+    id: string;
+    title: string;
+    url: string;
+    data: string;
+};
+
+type VideoMetadata1 = Pick<Video, "id" | "title">;
+type VideoMetadata2 = Omit<Video, "url" | "data">;
+```
+
+Pick은 취급할 프로퍼티를 지정하고 이와 반대로 Omit은 제외할 프로퍼티를 지정한다.
+
+### Record type
+
+```ts
+type PageInfo = {
+    title: string;
+};
+type Page = "home" | "about" | "contact";
+
+const nav: Record<Page, PageInfo> = {
+    home: { title: "home" },
+    about: { title: "about" },
+    contact: { title: "contact" }
+};
+```
+
+간단하게 생각하면 nav는 Page 타입을 key 값으로, PageInfo를 value 값으로 갖는 타입이라고 할 수 있다.
+
+```ts
+type Record<K extends keyof any, T> = {
+    [P in K]: T;
+};
+```
+
+여기에서 keyof any는 ' string | number | symbol '을 의미한다.
