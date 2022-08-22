@@ -105,3 +105,83 @@ function calculateArea(shape: Shape) {
 인터페이스는 타입으로만 사용 가능하지만 Rectangle을 클래스로 선언하면 타입과 값으로 모두 사용할 수 있어 오류가 발생하지 않는다.
 
 ### 🚨 타입 연산은 런타임에 영향을 주지 않는다.
+
+아래는 string 또는 number 타입인 값을 number로 정제하는 함수다.
+
+```ts
+function asNumber(val: number | string): number {
+  return val as number;
+}
+```
+
+이 코드는 아래와 같이 자바스크립트로 변환된다.
+
+```js
+function asNumber(val) {
+  return val;
+}
+```
+
+parameter로 들어온 val가 그대로 반환되는 코드로 아무런 정제 과정이 없다. `as number`는 타입 연산이고 런타임 동작에는 아무런 영향을 미치지 않는다.
+값을 정제하기 위해서는 런타임의 타입을 체크해야 하고 자바스크립트 연산을 통해 변환을 수행해야 한다.
+
+```ts
+function asNumber(val: number | string): number {
+  return typeof val === "string" ? Number(val) : val;
+}
+```
+
+### 🚨 런타임 타입은 선언된 타입과 다를 수 있다.
+
+다음 함수가 `console.log`까지 실행될 수 있을까?
+
+```ts
+fuction setLightSwitch(value: boolean) {
+  switch(value){
+    case true:
+      turnLightOn();
+      break;
+    case false:
+      turnLightOff();
+      break;
+    default:
+      console.log('Everything is Alright!')
+  }
+}
+```
+
+`:boolean`은 타입이기 때문에 런타임에서 제거된다. value에 문자열이 들어와도 런타임에서는 함수가 `turnLightOn`이 호출될 수도 있다.
+
+### 🚨 타입스크립트 타입으로는 함수를 오버로드할 수 없다.
+
+동일한 이름에 parameter만 다른 여러 버전의 함수를 허용하는 것을 **함수 오버로딩**이라고 한다. 타입스크립트에서는 타입과 런타임 동작이 무관해 함수 오버로딩이 불가능하다.
+
+다음과 같은 중복된 함수 구현은 불가능하다.
+
+```ts
+function add(a: number, b: number) {
+  return a + b;
+}
+function add(a: string, b: string) {
+  return a + b;
+}
+```
+
+하나의 함수에 대해 여러 개의 선언문을 작성할 수 있지만 타입 수준에서만 동작하며 구현체는 하나뿐이다.
+
+```ts
+// typescript
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
+
+// javascript
+function add(a, b) {
+  return a + b;
+}
+```
+
+위의 두 선언문은 자바스크립트로 변환되면서 제거되며 구현체만 남는다.
+
+### 🚨 타입스크립트 타입은 런타임 성능에 영향을 주지 않는다.
+
+타입과 타입 연산자는 자바스크립트 변환 시점에 제거되어 런타임의 성능에 영향을 주지 않는다.
