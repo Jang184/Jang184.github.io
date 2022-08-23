@@ -90,12 +90,13 @@ page-mathjax: false
 
 # Friends
 
-friends: [
-        {
-            #     title: "Su",
-            #     href: "http://su.gallery/"
-            # },{
-            title: "big fan of tim",
-            href: "https://github.com/bigfanoftim"
-        }
+friends:
+    [
+        { title: "big fan of tim", href: "https://github.com/bigfanoftim" },
+        { title: "rimi0108", href: "https://github.com/rimi0108" },
+        { title: "Min-Ch", href: "https://github.com/Min-Ch" },
+        { title: "Coderchacha", href: "https://github.com/Coderchacha" },
+        { title: "HKJA", href: "https://github.com/Jongseong0111" },
+        { title: "Luna ko", href: "https://github.com/lunayyko" },
+        { title: "Yang Choi", href: "https://github.com/YangChoi" }
     ]
