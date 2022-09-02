@@ -8,6 +8,8 @@ tags:
   - typescript
 ---
 
+## 코드 생성과 타입이 관계없음을 이해하기
+
 타입스크립트 컴파일러는 두 가지 역할을 수행한다.
 
 > 첫 번째, 최신 타입스크립트/자바스크립트를 브라우저에서 동작할 수 있도록 구버전의 자바스크립트로 트랜스파일한다.
@@ -185,3 +187,65 @@ function add(a, b) {
 ### 🚨 타입스크립트 타입은 런타임 성능에 영향을 주지 않는다.
 
 타입과 타입 연산자는 자바스크립트 변환 시점에 제거되어 런타임의 성능에 영향을 주지 않는다.
+
+## 구조적 타이핑에 익숙해지기
+
+자바스크립트는 **덕 타이핑(duck typing)** 기반이다. (덕 타이핑이란, 동적 타이핑의 한 종류로 객체의 변수 및 메소드의 집합이 객체의 타입을 결정하는 것이다. "만약 어떤 새가 오리처럼 걷고 헤엄치고 꽥꽥거리는 소리를 낸다면 나는 그 새를 오리라고 부를것이다.")
+
+만약 어떤 함수의 매개변수 값이 모두 주어진다면 그 값이 어떻게 만들어졌는지와 관계없이 사용한다. 타입스크립트는 이것을 그대로 모델링한다.
+
+**예제 코드**
+
+아래는 2D 벡터 타입과 벡터의 길이를 계산하는 함수이다.
+
+```ts
+interface Vector2D {
+  x: number;
+  y: number;
+}
+
+function calculateLength(v: Vector2D) {
+  return Math.sqrt(v.x * v.x + v.y * v.y);
+}
+
+interface NamedVector {
+  name: string;
+  x: number;
+  y: number;
+}
+```
+
+`NamedVector`는 number 타입의 x와 y 프로퍼티가 있기 때문에 `calculateLength` 함수로 호출이 가능하다.
+
+```ts
+const v: NamedVector = { name: "juri", x: 3, y: 3 };
+calculateLength(v); // 5
+```
+
+각각 다른 인터페이스인 Vector2D와 NamedVector의 관계가 전혀 선언되지 않았음에도 불구하고 NamedVector를 위한 별도의 함수를 구현할 필요가 없는 것이다. 여기에서 문제가 발생하기도 한다.
+
+아래는 3D 벡터 타입과 벡터의 길이를 1로 만드는 정규화 함수이다.
+
+```ts
+interface Vector3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
+function normalize(v: Vector3D) {
+  const length = calculateLength(v);
+
+  return {
+    x: v.x / length,
+    y: v.y / length,
+    z: v.z / length,
+  };
+}
+```
+
+```ts
+normalize({ x: 3, y: 4, z: 5 }); // { x: 0.6, y: 0.8, z: 1}
+```
+
+`calculateLength`는 2D 벡터로 연산을 하도록 선언되었는데도 왜 3D 벡터를 받는 데 문제가 없었을까?
