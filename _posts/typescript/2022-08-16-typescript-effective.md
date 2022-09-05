@@ -249,3 +249,67 @@ normalize({ x: 3, y: 4, z: 5 }); // { x: 0.6, y: 0.8, z: 1}
 ```
 
 `calculateLength`는 2D 벡터로 연산을 하도록 선언되었는데도 왜 3D 벡터를 받는 데 문제가 없었을까?
+
+타입스크립트 타입 시스템에서 타입은 타입의 확장에 열려(open)있다. 즉, 타입에 선언된 속성 외에 임의의 속성을 추가해도 오류가 발생하지 않는다는 것이다.
+
+```ts
+function calculateLengthL1(v: Vector3D) {
+  let length = 0;
+
+  for (const axis of Object.keys(v)) {
+    const coord = v[axis];
+    length += Math.abs(coord);
+  }
+
+  return length;
+}
+```
+
+```bash
+'string'은 'Vector3D'의 인덱스로 사용할 수 없기에 엘리먼트는 일시적으로 'any'타입입니다.
+```
+
+겉보기엔 문제가 없어보이지만 타입스크립트는 위와 같은 오류를 뱉는다. axis는 Vector3D의 key 중 하나이기 때문에 x, y, z 중 하나이며 이것들 모두 number인 값을 갖기 때문에 coord의 타입이 number일 것으로 예상된다.
+하지만, 이전에 본 것처럼 타입스크립트는 열려있기 때문에 매개변수의 타입에 선언된 것과 다른 타입의 속성이 들어올 수 있고 이 때문에 `v[axis]`는 number라고 확정할 수 없는 것이다.
+
+```ts
+const vec3D = { x: 3, y: 4, z: 1, address: "123 Seoul" };
+```
+
+이것처럼 선언되지 않은 string 타입의 속성인 address가 매개변수에 포함되면 calculateLengthL1 함수는 정상적으로 NaN을 반환할 것이다.
+따라서 상황에 맞게 다시 구현하자면 루프보다는 아래와 같이 모든 속성을 각각 더하는 것이 나을 수 있다.
+
+```ts
+function calculateLengthL1(v: Vector3D) {
+  return Math.abs(v.x) + Math.abs(v.y) + Math.abs(v.z);
+}
+```
+
+테스트를 작성할 땐 구조적 타이핑이 유리하다. 아래는 데이터베이스에 쿼리하고 결과를 처리하는 함수이다.
+
+```ts
+interface Author {
+  first: string;
+  last: string;
+}
+function getAuthors(database: PostgresDB): Author[] {
+  const authorRows = database.runQuery(`SELECT FIRST, LAST FROM AUTHORS`);
+  return authorRows.map((row) => ({ first: row[0], last: row[1] }));
+}
+```
+
+`getAuthors` 함수를 테스트하기 위해서는 모킹한 PostgresDB를 생성해야 하지만 구조적 타이핑을 활용해 더 구체적인 인터페이스를 정의할 수 있다.
+
+```ts
+interface DB {
+  runQuery: (sql: string) => any[];
+}
+function getAuthors(database: DB): Author[] {
+  const authorRows = database.runQuery(`SELECT FIRST, LAST FROM AUTHORS`);
+  return authorRows.map((row) => ({ first: row[0], last: row[1] }));
+}
+```
+
+구조적 타이핑덕분에 PostgresDB가 DB 인터페이스를 어떻게 구현하는지 명확히 선언할 필요가 없다.
+
+타입스크립트는 테스트 DB가 해당 인터페이스를 충족하는지 확인한다. 그리고 테스트 코드에는 실제 환경의 DB에 대한 정보가 불필요하다.
