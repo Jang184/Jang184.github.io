@@ -5,7 +5,8 @@ subtitle: NodeJS에서 모듈 임포트하기
 header-style: text
 author: Juri
 tags:
-  - test
+  - CJS
+  - ESM
 ---
 
 참고 : [nodejs-modules-imports](https://reflectoring.io/nodejs-modules-imports/)
@@ -213,7 +214,7 @@ import Logger from "./logger.js";
 
 두 NodeJS 모듈 시스템의 차이점에 대해 알아보자.
 
-1. 파일 확장자
+### 파일 확장자
 
 ES 모듈은 CommonJs와 Webpack, Typescript와 반대로 import할 때 파일 확장자를 명시해야 한다.
 
@@ -223,7 +224,7 @@ NodeJS 프로젝트의 기본 모듈 시스템을 ES 모듈로 하고싶다면 [
 
 위에서 언급했듯이 ES 모듈은 CommonJS 모듈을 import할 수 있지만 반대로 CommonJS 모듈에서 ES 모듈을 import하는 것은 불가능하다. 즉, `.mjs` 파일에서 `.js`파일을 import 할 수 없다.
 
-2. 동적 vs 정적
+### 동적 vs 정적
 
 두 모듈은 import와 export를 다루는 방식에서 차이가 있다.
 
@@ -237,8 +238,8 @@ ES 모듈의 import는 정적이고 구문 분석 시간에 실행된다. import
 
 ## 언제 무엇을 사용해야할까?
 
-만약 새로운 프로젝트를 시작할 참이라면 ES 모듈을 권장한다. ES 모듈은 몇년동안 표준화되어왔고 NodeJS 14부터 안정적으로 지원하고 있다.
+만약 새로운 프로젝트를 시작할 참이라면 **ES 모듈을 권장**한다. ES 모듈은 몇년동안 표준화되어왔고 NodeJS 14부터 안정적으로 지원하고 있다.
 
-이미 CommonJS 모듈을 사용하고 있는 기존의 프로젝트라면 굳이 ES 모듈로 마이그레이션할 필요는 없다. CommonJS 모듈은 앞으로도 NodeJS의 기본 모듈 시스템일 것이기 때문이다. 그러나, Babel이나 Typescript 같은 툴을 사용해 더 쉽게 CommonJS 를 유지하면서 ES 모듈을 사용할 수도 있다.
+이미 CommonJS 모듈을 사용하고 있는 기존의 프로젝트라면 **굳이 ES 모듈로 마이그레이션할 필요는 없다**. CommonJS 모듈은 앞으로도 NodeJS의 기본 모듈 시스템일 것이기 때문이다. 그러나, Babel이나 Typescript 같은 툴을 사용해 더 쉽게 CommonJS 를 유지하면서 ES 모듈을 사용할 수도 있다.
 
 CommonJS에서 ES 모듈로 마이그레이션 시 이전 버전과의 호환성에서 문제가 생길 수 있는 것을 주의하자.
